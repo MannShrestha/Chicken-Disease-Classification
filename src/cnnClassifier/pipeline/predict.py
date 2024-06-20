@@ -2,11 +2,6 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import os 
-import shutil
-
-# Copy training-model "model.h5" into directory model/
-os.makedirs(model)
-shutil.copy('artifacts/training/model.h5', 'model/')
 
 
 class PredictionPipeline:
@@ -16,7 +11,7 @@ class PredictionPipeline:
 
     def predict(self):
         # load model
-        model = load_model(os.path.join("model", "model.h5"))
+        model = load_model(os.path.join("artifacts","training", "model.h5"))
 
         imagename = self.filename
         test_image = image.load_img(imagename, target_size = (224, 224))
@@ -26,9 +21,9 @@ class PredictionPipeline:
         print(result)
 
         if result[0] == 1:
-            prediction = "Tumor"
+            prediction = "Healthy"
             return [{"image" : prediction}]
         else:
-            prediction = "Normal"
+            prediction = "Coccidiosis"
             return [{"image" : prediction}]
 
